@@ -1,0 +1,914 @@
+
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <title>Greenko | Generation Intelligence</title>
+
+  <style>
+    :root{
+      --bg:#f4f7f5;
+      --surface:#ffffff;
+      --dark:#12372a;
+      --green:#16845b;
+      --muted:#718078;
+      --border:#e3eae5;
+      --red:#dc5555;
+      --shadow:0 5px 22px rgba(20,50,35,.05);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:var(--bg);
+      color:#1b2c23;
+    }
+
+    header{
+      background:var(--dark);
+      color:white;
+      padding:20px 5%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+
+    .brand{
+      font-size:21px;
+      font-weight:bold;
+      letter-spacing:.3px;
+    }
+
+    .brand span{color:#7be0a9}
+
+    .status{
+      font-size:12px;
+      background:#1c5941;
+      padding:8px 12px;
+      border-radius:20px;
+    }
+
+    main{
+      max-width:1400px;
+      margin:auto;
+      padding:30px 5%;
+    }
+
+    .welcome{
+      margin-bottom:25px;
+    }
+
+    .welcome h1{
+      font-size:27px;
+      margin:0 0 8px;
+    }
+
+    .welcome p{
+      color:var(--muted);
+      margin:0;
+      line-height:1.6;
+    }
+
+    .section-title{
+      font-size:17px;
+      margin:28px 0 14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .two-column{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:13px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      min-width:0;
+    }
+
+    .metric-label{
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:12px;
+    }
+
+    .metric-value{
+      font-size:27px;
+      font-weight:bold;
+      color:var(--dark);
+    }
+
+    .metric-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    .card h2{
+      font-size:17px;
+      margin:0 0 18px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+    }
+
+    label{
+      display:block;
+      font-size:13px;
+      font-weight:bold;
+      margin-bottom:7px;
+    }
+
+    input,select{
+      width:100%;
+      padding:12px;
+      border:1px solid #dce5df;
+      border-radius:8px;
+      font-size:14px;
+      outline:none;
+      background:white;
+    }
+
+    input:focus,select:focus{
+      border-color:var(--green);
+    }
+
+    button{
+      border:0;
+      border-radius:8px;
+      background:var(--green);
+      color:white;
+      padding:12px 18px;
+      font-size:14px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    button:hover{background:var(--dark)}
+    button:disabled{opacity:.6;cursor:wait}
+
+    .primary-button{
+      margin-top:18px;
+      width:100%;
+    }
+
+    .secondary-button{
+      background:#eaf4ee;
+      color:var(--dark);
+    }
+
+    .result-card{
+      background:var(--dark);
+      color:white;
+      border-radius:13px;
+      padding:22px;
+      margin-top:18px;
+    }
+
+    .result-card h2{
+      margin:0 0 18px;
+      font-size:17px;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .result-item{
+      background:rgba(255,255,255,.09);
+      padding:15px;
+      border-radius:9px;
+    }
+
+    .result-item small{
+      color:#c0d7ca;
+      display:block;
+      margin-bottom:8px;
+    }
+
+    .result-item strong{
+      font-size:22px;
+    }
+
+    .result-note{
+      margin-top:15px;
+      font-size:13px;
+      color:#c0d7ca;
+    }
+
+    .driver{
+      border-left:3px solid var(--green);
+      padding:12px 14px;
+      background:#f7faf8;
+      margin-bottom:11px;
+      border-radius:0 8px 8px 0;
+    }
+
+    .driver strong{font-size:14px}
+    .driver p{
+      color:var(--muted);
+      font-size:13px;
+      margin:7px 0 0;
+      line-height:1.5;
+    }
+
+    .recommendation{
+      background:#edf7f0;
+      border-radius:8px;
+      padding:12px;
+      margin:9px 0;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .table-wrap{overflow-x:auto}
+
+    table{
+      border-collapse:collapse;
+      width:100%;
+      font-size:13px;
+      min-width:650px;
+    }
+
+    th,td{
+      padding:12px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+    }
+
+    th{
+      background:#f5f8f6;
+      color:#52665a;
+    }
+
+    .positive{color:var(--green);font-weight:bold}
+    .negative{color:var(--red);font-weight:bold}
+
+    .bar-row{margin:16px 0}
+
+    .bar-heading{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:13px;
+      margin-bottom:7px;
+    }
+
+    .bar-track{
+      height:9px;
+      border-radius:10px;
+      background:#eaf0ec;
+      overflow:hidden;
+    }
+
+    .bar-fill{
+      height:100%;
+      background:var(--green);
+      border-radius:10px;
+    }
+
+    .comparison{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .comparison-box{
+      background:#f6f9f7;
+      border:1px solid var(--border);
+      padding:15px;
+      border-radius:9px;
+    }
+
+    .comparison-box strong{
+      display:block;
+      font-size:21px;
+      margin-top:8px;
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .message{
+      margin-top:14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .hidden{display:none}
+
+    footer{
+      text-align:center;
+      padding:25px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    @media(max-width:900px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .two-column{grid-template-columns:1fr}
+    }
+
+    @media(max-width:550px){
+      main{padding:22px 4%}
+      .grid{grid-template-columns:1fr 1fr;gap:10px}
+      .card{padding:15px}
+      .metric-value{font-size:22px}
+      .form-grid{grid-template-columns:1fr}
+      .result-grid{grid-template-columns:1fr}
+      .comparison{grid-template-columns:1fr}
+      .welcome h1{font-size:23px}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class='brand'>GREENKO <span>GENERATION INTELLIGENCE</span></div>
+  <div class='status' id='connectionStatus'>Checking backend...</div>
+</header>
+
+<main>
+
+  <section class='welcome'>
+    <h1>Power Generation Forecasting</h1>
+    <p>AI-powered generation prediction, variance analysis and operational insights.</p>
+  </section>
+
+  <h2 class='section-title'>Model Overview</h2>
+
+  <section class='grid'>
+    <div class='card'>
+      <div class='metric-label'>Selected Model</div>
+      <div class='metric-value' id='modelName'>--</div>
+      <div class='metric-sub'>Best cross-validation model</div>
+    </div>
+
+    <div class='card'>
+      <div class='metric-label'>Dataset Records</div>
+      <div class='metric-value' id='datasetRecords'>--</div>
+      <div class='metric-sub'>Historical observations</div>
+    </div>
+
+    <div class='card'>
+      <div class='metric-label'>Model MAE</div>
+      <div class='metric-value' id='modelMae'>--</div>
+      <div class='metric-sub'>Mean absolute error (MWh)</div>
+    </div>
+
+    <div class='card'>
+      <div class='metric-label'>Model R²</div>
+      <div class='metric-value' id='modelR2'>--</div>
+      <div class='metric-sub'>Test-set performance</div>
+    </div>
+  </section>
+
+  <section class='two-column'>
+
+    <div class='card'>
+      <h2>Generation Analysis</h2>
+
+      <form id='analysisForm'>
+        <div class='form-grid'>
+
+          <div>
+            <label for='irradiance'>Solar Irradiance (W/m²)</label>
+            <input id='irradiance' type='number' min='0' step='any' value='650' required>
+          </div>
+
+          <div>
+            <label for='wind'>Wind Speed (m/s)</label>
+            <input id='wind' type='number' min='0' step='any' value='5.2' required>
+          </div>
+
+          <div>
+            <label for='temperature'>Temperature (°C)</label>
+            <input id='temperature' type='number' step='any' value='32' required>
+          </div>
+
+          <div>
+            <label for='outage'>Outage Status</label>
+            <select id='outage'>
+              <option value='0'>No outage</option>
+              <option value='1'>Outage reported</option>
+            </select>
+          </div>
+
+          <div>
+            <label for='forecast'>Existing Forecast (MWh)</label>
+            <input id='forecast' type='number' min='0' step='any' value='48' required>
+          </div>
+
+          <div>
+            <label for='actual'>Actual Generation (MWh)</label>
+            <input id='actual' type='number' min='0' step='any' value='' placeholder='Enter actual generation (optional)'>
+            <div class='muted'>Optional for live prediction</div>
+          </div>
+
+        </div>
+
+        <button type='submit' class='primary-button' id='analyzeButton'>
+          Analyze Generation
+        </button>
+
+        <div class='message' id='formMessage'>
+          Enter operating conditions and run the analysis.
+        </div>
+      </form>
+    </div>
+
+    <div class='card'>
+      <h2>Model Performance Comparison</h2>
+
+      <div class='comparison'>
+        <div class='comparison-box'>
+          <span class='muted'>ML Model MAE</span>
+          <strong id='mlMae'>--</strong>
+          <span class='muted'>MWh</span>
+        </div>
+
+        <div class='comparison-box'>
+          <span class='muted'>Existing Forecast MAE</span>
+          <strong id='baselineMae'>--</strong>
+          <span class='muted'>MWh</span>
+        </div>
+      </div>
+
+      <div class='bar-row'>
+        <div class='bar-heading'>
+          <span>MAE improvement</span>
+          <strong id='improvement'>--</strong>
+        </div>
+        <div class='bar-track'>
+          <div class='bar-fill' id='improvementBar' style='width:0%'></div>
+        </div>
+      </div>
+
+      <p class='message'>
+        The ML model is evaluated against the existing forecast using the
+        same held-out test records.
+      </p>
+
+      <div class='message' id='validationDetails'></div>
+    </div>
+
+  </section>
+
+  <section id='analysisResults' class='hidden'>
+
+    <div class='result-card'>
+      <h2>Generation Prediction Results</h2>
+
+      <div class='result-grid'>
+        <div class='result-item'>
+          <small>Predicted Generation</small>
+          <strong id='predictedGeneration'>--</strong>
+          <small>MWh</small>
+        </div>
+
+        <div class='result-item'>
+          <small>Existing Forecast</small>
+          <strong id='existingForecast'>--</strong>
+          <small>MWh</small>
+        </div>
+
+        <div class='result-item'>
+          <small>Predicted Variance</small>
+          <strong id='predictedVariance'>--</strong>
+          <small id='predictedVariancePercent'>--</small>
+        </div>
+      </div>
+
+      <div class='result-note' id='predictionResultNote'></div>
+    </div>
+
+    <section class='two-column'>
+
+      <div class='card'>
+        <h2>Variance Explanation</h2>
+        <h3 id='generationResult'>--</h3>
+        <div id='varianceDrivers'></div>
+        <p class='message' id='explanationNote'></p>
+      </div>
+
+      <div class='card'>
+        <h2>Operational Recommendations</h2>
+        <div id='recommendations'></div>
+      </div>
+
+    </section>
+
+    <section class='card' style='margin-top:18px'>
+      <h2>Historical Evidence – Similar Operating Conditions</h2>
+      <div class='table-wrap'>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Similarity</th>
+              <th>Irradiance</th>
+              <th>Wind Speed</th>
+              <th>Forecast</th>
+              <th>Actual</th>
+              <th>Variance</th>
+            </tr>
+          </thead>
+          <tbody id='historyBody'></tbody>
+        </table>
+      </div>
+    </section>
+
+  </section>
+
+  <section class='two-column'>
+
+    <div class='card'>
+      <h2>Feature Importance</h2>
+      <p class='muted'>Relative importance reported by the selected model.</p>
+      <div id='featureImportance'>
+        <p class='message'>Loading feature importance...</p>
+      </div>
+    </div>
+
+    <div class='card'>
+      <h2>Dataset Limitations</h2>
+      <div id='limitations'>
+        <p class='message'>Loading evaluation details...</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  Power Generation Forecasting & Variance Explanation Agent |
+  AI/ML Technical Assessment Demo
+</footer>
+
+<script>
+
+const API = '';
+
+function formatNumber(value,digits=2){
+  const number = Number(value);
+  return Number.isFinite(number) ? number.toFixed(digits) : '--';
+}
+
+function showMessage(id,message){
+  document.getElementById(id).textContent = message;
+}
+
+async function apiRequest(url,options={}){
+  const response = await fetch(API + url,options);
+
+  if(!response.ok){
+    const message = await response.text();
+    throw new Error(message || 'API request failed');
+  }
+
+  return await response.json();
+}
+
+async function loadDashboard(){
+
+  try{
+
+    const [health,data] = await Promise.all([
+      apiRequest('/api/health'),
+      apiRequest('/api/metrics')
+    ]);
+
+    document.getElementById('connectionStatus').textContent =
+      '● Backend Connected';
+
+    document.getElementById('modelName').textContent =
+      data.model_name || '--';
+
+    document.getElementById('datasetRecords').textContent =
+      data.dataset_records ?? '--';
+
+    const metrics = data.metrics || {};
+    const ml = metrics.ml_model || {};
+    const baseline = metrics.existing_forecast || {};
+
+    document.getElementById('modelMae').textContent =
+      formatNumber(ml.mae,3);
+
+    document.getElementById('modelR2').textContent =
+      formatNumber(ml.r2,3);
+
+    document.getElementById('mlMae').textContent =
+      formatNumber(ml.mae,3);
+
+    document.getElementById('baselineMae').textContent =
+      formatNumber(baseline.mae,3);
+
+    if(ml.mae && baseline.mae){
+
+      const improvement =
+        ((baseline.mae - ml.mae) / baseline.mae) * 100;
+
+      document.getElementById('improvement').textContent =
+        formatNumber(improvement,2) + '%';
+
+      document.getElementById('improvementBar').style.width =
+        Math.max(0,Math.min(100,improvement)) + '%';
+    }
+
+    document.getElementById('validationDetails').textContent =
+      'Training records: ' + metrics.training_records +
+      ' | Testing records: ' + metrics.testing_records;
+
+    renderFeatures(data.feature_importance || {});
+
+    renderLimitations(data.limitations || []);
+
+  }
+  catch(error){
+
+    document.getElementById('connectionStatus').textContent =
+      '● Backend unavailable';
+
+    showMessage('formMessage',
+      'Could not load dashboard data: ' + error.message);
+
+  }
+
+}
+
+function renderFeatures(features){
+
+  const container = document.getElementById('featureImportance');
+  container.innerHTML = '';
+
+  const entries = Object.entries(features)
+    .sort((a,b) => b[1] - a[1]);
+
+  entries.forEach(([name,value]) => {
+
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+
+    const heading = document.createElement('div');
+    heading.className = 'bar-heading';
+
+    const label = document.createElement('span');
+    label.textContent = name.replaceAll('_',' ');
+
+    const score = document.createElement('strong');
+    score.textContent = formatNumber(value) + '%';
+
+    heading.append(label,score);
+
+    const track = document.createElement('div');
+    track.className = 'bar-track';
+
+    const fill = document.createElement('div');
+    fill.className = 'bar-fill';
+    fill.style.width = Math.max(0,Math.min(100,Number(value))) + '%';
+
+    track.appendChild(fill);
+    row.append(heading,track);
+    container.appendChild(row);
+
+  });
+
+}
+
+function renderLimitations(items){
+
+  const container = document.getElementById('limitations');
+  container.innerHTML = '';
+
+  items.forEach(item => {
+
+    const element = document.createElement('div');
+    element.className = 'recommendation';
+    element.textContent = '• ' + item;
+
+    container.appendChild(element);
+
+  });
+
+}
+
+function renderDrivers(drivers){
+
+  const container = document.getElementById('varianceDrivers');
+  container.innerHTML = '';
+
+  drivers.forEach(driver => {
+
+    const element = document.createElement('div');
+    element.className = 'driver';
+
+    const title = document.createElement('strong');
+    title.textContent = driver.factor;
+
+    const observation = document.createElement('p');
+    observation.textContent = driver.observation;
+
+    const impact = document.createElement('p');
+    impact.textContent = 'Potential impact: ' + driver.impact;
+
+    element.append(title,observation,impact);
+    container.appendChild(element);
+
+  });
+
+}
+
+function renderRecommendations(items){
+
+  const container = document.getElementById('recommendations');
+  container.innerHTML = '';
+
+  if(!items.length){
+    container.textContent = 'No specific recommendations available.';
+    return;
+  }
+
+  items.forEach(item => {
+
+    const element = document.createElement('div');
+    element.className = 'recommendation';
+    element.textContent = '✓ ' + item;
+
+    container.appendChild(element);
+
+  });
+
+}
+
+function renderHistory(records){
+
+  const body = document.getElementById('historyBody');
+  body.innerHTML = '';
+
+  records.forEach(record => {
+
+    const row = document.createElement('tr');
+
+    const values = [
+      record.date,
+      formatNumber(record.similarity_distance,3),
+      formatNumber(record.irradiance_wm2),
+      formatNumber(record.wind_speed_ms),
+      formatNumber(record.forecast_mwh),
+      formatNumber(record.actual_mwh),
+      formatNumber(record.variance_mwh)
+    ];
+
+    values.forEach((value,index) => {
+
+      const cell = document.createElement('td');
+      cell.textContent = value;
+
+      if(index === 6){
+        cell.className = Number(record.variance_mwh) >= 0
+          ? 'positive'
+          : 'negative';
+      }
+
+      row.appendChild(cell);
+
+    });
+
+    body.appendChild(row);
+
+  });
+
+}
+
+document.getElementById('analysisForm').addEventListener('submit',async function(event){
+
+  event.preventDefault();
+
+  const button = document.getElementById('analyzeButton');
+  button.disabled = true;
+  button.textContent = 'Analyzing...';
+
+  showMessage('formMessage','Running generation analysis...');
+
+  const input = {
+    irradiance_wm2:Number(document.getElementById('irradiance').value),
+    wind_speed_ms:Number(document.getElementById('wind').value),
+    temperature_c:Number(document.getElementById('temperature').value),
+    outage_flag:Number(document.getElementById('outage').value),
+    forecast_mwh:Number(document.getElementById('forecast').value)
+  };
+
+  const actualValue = document.getElementById('actual').value;
+
+  if(actualValue !== ''){
+    input.actual_mwh = Number(actualValue);
+  }
+
+  try{
+
+    const data = await apiRequest('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(input)
+    });
+
+    const forecast = data.forecast || {};
+    const explanation = data.explanation || {};
+
+    document.getElementById('analysisResults').classList.remove('hidden');
+
+    document.getElementById('predictedGeneration').textContent =
+      formatNumber(forecast.predicted_generation_mwh);
+
+    document.getElementById('existingForecast').textContent =
+      formatNumber(forecast.existing_forecast_mwh);
+
+    const predictedVariance =
+      forecast.predicted_generation_mwh -
+      forecast.existing_forecast_mwh;
+
+    const varianceElement =
+      document.getElementById('predictedVariance');
+
+    varianceElement.textContent =
+      (predictedVariance > 0 ? '+' : '') +
+      formatNumber(predictedVariance);
+
+    varianceElement.style.color =
+      predictedVariance >= 0 ? '#7be0a9' : '#ffaaaa';
+
+    const variancePercentage = forecast.existing_forecast_mwh !== 0
+      ? (predictedVariance / forecast.existing_forecast_mwh) * 100
+      : 0;
+
+    document.getElementById('predictedVariancePercent').textContent =
+      (variancePercentage > 0 ? '+' : '') +
+      formatNumber(variancePercentage) + '%';
+
+    document.getElementById('predictionResultNote').textContent =
+      'Model: ' + (data.model_name || 'Selected forecasting model') +
+      '. Actual generation is used only for retrospective comparison when supplied.';
+
+    document.getElementById('generationResult').textContent =
+      explanation.result || 'Analysis completed';
+
+    renderDrivers(explanation.variance_drivers || []);
+    renderRecommendations(explanation.recommendations || []);
+    renderHistory(data.historical_evidence || []);
+
+    document.getElementById('explanationNote').textContent =
+      explanation.explanation_note || '';
+
+    showMessage('formMessage','Analysis completed successfully.');
+
+    document.getElementById('analysisResults').scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+
+  }
+  catch(error){
+
+    showMessage('formMessage','Analysis failed: ' + error.message);
+
+  }
+  finally{
+
+    button.disabled = false;
+    button.textContent = 'Analyze Generation';
+
+  }
+
+});
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
